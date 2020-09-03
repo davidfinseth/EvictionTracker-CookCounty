@@ -157,9 +157,9 @@ def IncrementDate(date):
     newdate = (datetime.strptime(date, '%m/%d/%Y') + timedelta(days=1)).strftime('%m/%d/%Y')
     return newdate
 
-def GetAllRecords():
-    currentdate = '07/22/2020'
-    while currentdate != '07/29/2020':
+def GetAllRecordsBetweenDates(startDate,endDate):
+    currentdate = startDate
+    while currentdate != endDate:
         tennantList.clear()
         GetAllRecordsByDate(currentdate)
         currentdate = IncrementDate(currentdate)
@@ -215,18 +215,7 @@ def UpdateLocation():
             GeoLocationManager.FindLocation(tenant)
             tenant.save()
 
-
 tennantList = []
-GetAllRecords()
-
+GetAllRecordsByDate((datetime.today() - timedelta(days=3)).strftime('%m-%d-%Y'))
 MongoManager.UpdateDatabaseFromSheets()
 UpdateLocation()
-
-
-
-
-# TODO: Collect cases and save them to a database or spreadsheet
-# Send cases through case search to record details
-# Send cases through sherif search to find addresses
-# Create new system for verifying if CARES protected: 
-#      -Fannie Mae and Freddie Mac Search
