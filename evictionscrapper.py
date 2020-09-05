@@ -1,5 +1,4 @@
-from selenium.webdriver import Chrome
-from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,6 +11,14 @@ import time
 import GoogleSheetManager
 import GeoLocationManager
 import MongoManager
+
+GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--disable-gpu')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.binary_location = GOOGLE_CHROME_PATH
 
 class Tennant:
     plaintiff = ""
@@ -29,7 +36,7 @@ class Tennant:
         self.caseNumber = case_number
 
 def DocketSearch(date):
-    browser = Chrome()
+    browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
     browser.get('http://www.cookcountyclerkofcourt.org/CourtCaseSearch/DocketSearch.aspx')
     try:
         division_form = browser.find_element_by_id('ctl00_MainContent_ddlDatabase_Input')
@@ -63,7 +70,7 @@ def DocketSearch(date):
 
 def SheriffSearch(tennant):
     casenumberlookup = tennant.caseNumber.translate({ord(i): None for i in '-M'})
-    browser = Chrome()
+    browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
     browser.get('https://civilprocess.ccsheriff.org/default1.asp')
     number_form = browser.find_element_by_id('casenum')
     number_form.send_keys(casenumberlookup)
@@ -109,7 +116,7 @@ def GetAllRecordsByDate(date):
     return
 
 def DocketSearchCase(tennant):
-    browser = Chrome()
+    browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
     browser.get('http://www.cookcountyclerkofcourt.org/CourtCaseSearch/DocketSearch.aspx')
     try:
         division_form = browser.find_element_by_id('ctl00_MainContent_ddlDatabase_Input')
