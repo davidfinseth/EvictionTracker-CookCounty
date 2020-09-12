@@ -1,4 +1,5 @@
 import gspread
+import os
 
 class Tennant:
     plaintiff = ""
@@ -16,7 +17,7 @@ class Tennant:
         self.caseNumber = case_number
 
 def authenticate():
-    gc = gspread.service_account()
+    gc = gspread.service_account(filename=os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"))
     sh = gc.open("evictions_served_Chicago")
     return sh
 
