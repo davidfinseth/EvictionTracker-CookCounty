@@ -11,14 +11,13 @@ import time
 import GoogleSheetManager
 import GeoLocationManager
 import MongoManager
-
-GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
-CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+import os
 
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--no-sandbox')
-chrome_options.binary_location = GOOGLE_CHROME_PATH
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 
 class Tennant:
     plaintiff = ""
@@ -36,11 +35,12 @@ class Tennant:
         self.caseNumber = case_number
 
 def DocketSearch(date):
-    browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+    browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     browser.get('http://www.cookcountyclerkofcourt.org/CourtCaseSearch/DocketSearch.aspx')
     try:
         division_form = browser.find_element_by_id('ctl00_MainContent_ddlDatabase_Input')
     except:
+        browser.close()
         return
     division_form.send_keys('Civil')
     type_form = browser.find_element_by_id('ctl00_MainContent_rbSearchType_ctl01')
@@ -55,6 +55,7 @@ def DocketSearch(date):
         element_present = EC.presence_of_element_located((By.ID, 'MainContent_gvResults'))
         WebDriverWait(browser, 60).until(element_present)
     except NoSuchElementException:
+        browser.close()
         return
     table = browser.find_element_by_id("MainContent_gvResults")
     rows = table.find_elements_by_tag_name("tr")
@@ -66,11 +67,12 @@ def DocketSearch(date):
                 report.date = date
                 report.casetype = cols[4].text
                 tennantList.append(report)
+    browser.close()
     return 
 
 def SheriffSearch(tennant):
     casenumberlookup = tennant.caseNumber.translate({ord(i): None for i in '-M'})
-    browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+    browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     browser.get('https://civilprocess.ccsheriff.org/default1.asp')
     number_form = browser.find_element_by_id('casenum')
     number_form.send_keys(casenumberlookup)
@@ -116,11 +118,12 @@ def GetAllRecordsByDate(date):
     return
 
 def DocketSearchCase(tennant):
-    browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+    browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
     browser.get('http://www.cookcountyclerkofcourt.org/CourtCaseSearch/DocketSearch.aspx')
     try:
         division_form = browser.find_element_by_id('ctl00_MainContent_ddlDatabase_Input')
     except:
+        browser.close()
         return
     division_form.send_keys('Civil')
     case_year = browser.find_element_by_id('ctl00_MainContent_txtCaseYear')
@@ -146,6 +149,7 @@ def DocketSearchCase(tennant):
     try:
         tennant.plaintiff = browser.find_element_by_xpath('//*[@id="objCaseDetails"]/table[2]/tbody/tr[2]/td[1]').text
     except NoSuchElementException:
+        browser.close()
         return
     tennant.attorney = browser.find_element_by_xpath('/html/body/form/div[5]/div[2]/table[2]/tbody/tr[2]/td[3]').text
     tennant.defendant = []
