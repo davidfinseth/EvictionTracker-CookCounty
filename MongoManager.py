@@ -2,8 +2,9 @@ import GoogleSheetManager
 import credentials
 from datetime import datetime
 from mongoengine import *
+import os
 
-connect(host=credentials.login['MongoSecret'])
+connect(host=os.environ.get("MongoSecret"))
 
 
 class Tenant(Document):
