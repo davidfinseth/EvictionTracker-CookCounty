@@ -4,6 +4,10 @@ A web scraping robot that keeps track of daily eviction filings in Cook County I
 ## Motivation
 During the COVID-19 pandemic it became clear that renters needed more protections in the face of evictions. Despite the passing of the CARES act evictions still continued to be filled across the county. 
 
+## Data
+
+[Eviction Dashboard](https://charts.mongodb.com/charts-project-0-bxvpg/public/dashboards/79497833-a440-4c4c-af82-e12b23d33026)
+[Eviction Data](https://docs.google.com/spreadsheets/d/1wYpBQffEyS-xYp54R1hDiLBNOS2kQEeXzhjNi_C6d0U/edit?usp=sharing)
 
 ## Tech/framework used
 
