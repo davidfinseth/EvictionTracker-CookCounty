@@ -11,6 +11,7 @@ During the COVID-19 pandemic it became clear that renters needed more protection
 - [Selenium](https://selenium-python.readthedocs.io/)
 - [MongoDB](https://www.mongodb.com/)
 - [gspread](https://github.com/burnash/gspread)
+- [Heroku](https://heroku.com)
 
 
 ## Features
