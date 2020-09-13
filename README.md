@@ -20,6 +20,17 @@ During the COVID-19 pandemic it became clear that renters needed more protection
 - Uploads data to public spreadsheet
 - Uploads data to private database for visualization
 
+## Code Example
+```python
+import evictionscrapper
+
+# Get all records from a sepcific date
+evictionscrapper.GetAllRecordsByDate('07/29/2020')
+
+# Get all records from between two dates
+evictionscrapper.GetAllRecordsBetweenDates('07/01/2020', '07/29/2020)
+```
+
 ## Contribute
 Reach out or make a pull request if you would like to contribute.
 
@@ -29,4 +40,4 @@ This project was built with partnership from:
  - [Tenants United](https://www.tenantsunitedchicago.org/)
 
 
-MIT © [Yourname]()
+MIT © [David Finseth](https://github.com/davidfinseth)
