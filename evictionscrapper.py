@@ -228,5 +228,5 @@ def UpdateLocation():
 
 tennantList = []
 GetAllRecordsByDate((datetime.today() - timedelta(days=3)).strftime('%m-%d-%Y'))
-MongoManager.UpdateDatabaseFromSheets()
-UpdateLocation()
+MongoManager.UpdateDatabaseFromDate((datetime.today() - timedelta(days=3)).strftime('%m/%d/%Y'))
+#UpdateLocation()

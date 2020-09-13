@@ -40,3 +40,10 @@ def UpdateDatabaseFromSheets():
     fulllist = SheetsManager.GetListFromSheets()
     for cols in fulllist:
         AddTenantToDatabase(cols)
+
+def UpdateDatabaseFromDate(targetDate):
+    SheetsManager = GoogleSheetManager
+    fulllist = SheetsManager.GetListFromSheets()
+    for cols in fulllist:
+        if(targetDate == datetime.strptime(cols[1], '%m/%d/%Y')):
+            AddTenantToDatabase(cols)
